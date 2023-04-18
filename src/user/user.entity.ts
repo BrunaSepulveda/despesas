@@ -1,14 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('user')
-export class NomeComposto {
-  @PrimaryGeneratedColumn('uuid')
+export class UserEntity {
+  @PrimaryColumn({ type: 'uuid' })
   public id: string;
 
   @Column({ unique: true, nullable: false })
   public email: string;
 
-  @Column({ type: 'int', length: 8, nullable: false })
+  @Column({ type: 'int', nullable: false })
   public password: number;
 
   @Column({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
