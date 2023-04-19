@@ -2,14 +2,10 @@
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
-const srcPath = path.resolve(__dirname, 'src');
 
 const ormconfig: any = {
   cli: {
     migrationsDir: path.join('src', 'migrations'),
-    extra: {
-      uuidExtension: 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";',
-    },
   },
   database: process.env.DB_NAME,
   schema: process.env.DB_SCHEMA,

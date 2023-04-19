@@ -1,9 +1,9 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { UserEntity } from './user.entity';
+import { User } from './user.entity';
 
-@EntityRepository(UserEntity)
-export class UserRepository extends Repository<UserEntity> {
-  findByEmail(email: string): Promise<UserEntity> {
+@EntityRepository(User)
+export class UserRepository extends Repository<User> {
+  findByEmail(email: string): Promise<User> {
     return this.findOne({ where: { email } });
   }
 }
