@@ -5,46 +5,46 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
-  ParseUUIDPipe,
-  Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './create-user.dto';
-import { UpdateUserDto } from './update-user.dto';
 import { UserService } from './user.service';
+import { AuthService } from '../auth/auth.service';
+import { UserDecorator } from './user.decorator';
+import { User } from './user.entity';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
   async createUser(@Body() userDto: CreateUserDto) {
-    return this.userService.create(userDto);
+    const { email, password } = await this.authService.signup(userDto);
+    return this.userService.create(email, password);
   }
 
-  @Get('/:id')
+  @Post('/signin')
   @HttpCode(HttpStatus.OK)
-  async getOne(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.userService.getOne(id);
+  async signin(@Body() userDto: CreateUserDto) {
+    return this.authService.signin(userDto);
   }
+
+  @UseGuards(AuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllUsers() {
-    return this.userService.getAll();
+  async getOne(@UserDecorator() user: User) {
+    return this.userService.getOne(user.id);
   }
 
-  @Delete('/:id')
+  @UseGuards(AuthGuard)
+  @Delete()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.userService.deleteById(id);
-  }
-
-  @Patch('/:id')
-  async updateUser(
-    @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() userDto: UpdateUserDto,
-  ) {
-    return this.userService.editById(id, userDto);
+  async deleteUser(@UserDecorator() user: User) {
+    return this.userService.deleteById(user.id);
   }
 }

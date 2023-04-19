@@ -10,7 +10,7 @@ export class User {
   public email: string;
 
   @Column({ type: 'int', nullable: false })
-  public password: number;
+  public password: string;
 
   @OneToMany(() => Expense, (expense) => expense.id)
   public expenses: Expense[];
