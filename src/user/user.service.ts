@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UserRepository } from '../../user.repository';
+import { UserRepository } from './user.repository';
 import { User } from './user.entity';
 import { UpdateResult } from 'typeorm';
 

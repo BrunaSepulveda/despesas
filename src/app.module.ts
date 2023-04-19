@@ -5,7 +5,7 @@ import { AppConfigModule } from './app-config/app-config.module';
 import { AppConfigService } from './app-config/app-config.service';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
-import { UserRepository } from '../user.repository';
+import { UserRepository } from './user/user.repository';
 import { APP_PIPE } from '@nestjs/core';
 import { AuthService } from './auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
