@@ -34,6 +34,9 @@ export class AuthGuard implements CanActivate {
       });
       if (payload?.id) {
         const user = await this.userService.getOne(payload.id);
+        if (!user) {
+          throw new UnauthorizedException('Sem autorização');
+        }
         request['user'] = user;
       }
     } catch {

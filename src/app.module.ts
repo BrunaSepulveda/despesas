@@ -11,13 +11,15 @@ import { AuthService } from './auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ExpenseService } from './expense/expense.service';
 import { ExpenseRepository } from './expense/expense.repository';
+import { ExpenseController } from './expense/expense.controller';
+import ormconfig from '../ormconfig';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRootAsync({
-      imports: [AppConfigModule],
-      useExisting: AppConfigService,
+    TypeOrmModule.forRoot({
+      ...ormconfig,
+      autoLoadEntities: true,
     }),
     JwtModule.register({
       global: true,
@@ -25,14 +27,13 @@ import { ExpenseRepository } from './expense/expense.repository';
       signOptions: { expiresIn: '3600s' },
     }),
     AppConfigModule,
+    TypeOrmModule.forFeature([ExpenseRepository, UserRepository]),
   ],
-  controllers: [UserController],
+  controllers: [UserController, ExpenseController],
   providers: [
     AuthService,
     UserService,
-    UserRepository,
     ExpenseService,
-    ExpenseRepository,
     { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) },
   ],
 })

@@ -1,9 +1,11 @@
+import { ConnectionOptions } from 'typeorm';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
-const ormconfig: any = {
+const ormconfig: ConnectionOptions = {
   cli: {
     migrationsDir: path.join('src', 'migrations'),
   },
@@ -12,7 +14,7 @@ const ormconfig: any = {
   host: process.env.DB_HOST,
   migrationsTableName: 'database_migrations',
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  port: Number(process.env.DB_PORT),
   type: 'postgres',
   username: process.env.DB_USERNAME,
   migrationsRun: process.env.NODE_ENV !== 'test',
