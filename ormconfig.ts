@@ -3,7 +3,7 @@ import { ConnectionOptions } from 'typeorm';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const dotenv = require('dotenv');
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+dotenv.config({ path: `.env` });
 
 const ormconfig: ConnectionOptions = {
   cli: {
