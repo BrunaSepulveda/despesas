@@ -18,7 +18,6 @@ const ormconfig: ConnectionOptions = {
   type: 'postgres',
   username: process.env.DB_USERNAME,
   migrationsRun: process.env.NODE_ENV !== 'test',
-  entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: [path.join(__dirname, 'src', 'migrations', '*')],
 };
 

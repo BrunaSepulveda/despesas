@@ -11,12 +11,15 @@ import { ExpenseService } from './expense/expense.service';
 import { ExpenseRepository } from './expense/expense.repository';
 import { ExpenseController } from './expense/expense.controller';
 import ormconfig from '../ormconfig';
+import { User } from './user/user.entity';
+import { Expense } from './expense/expense.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       ...ormconfig,
+      entities: [User, Expense],
       autoLoadEntities: true,
     }),
     JwtModule.register({
@@ -28,6 +31,8 @@ import ormconfig from '../ormconfig';
   ],
   controllers: [UserController, ExpenseController],
   providers: [
+    ExpenseRepository,
+    UserRepository,
     AuthService,
     UserService,
     ExpenseService,
