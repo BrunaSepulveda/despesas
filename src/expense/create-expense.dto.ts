@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Max, Min, MaxLength } from 'class-validator';
 
 export class CreateExpenseDto {
   @IsNotEmpty({ message: 'A descrição é obrigatória' })
   @IsString({ message: 'A descrição deve ser em texto ' })
+  @MaxLength(191)
   public description: string;
 
   @IsNotEmpty({ message: 'O valor da despesa é obrigatório' })
