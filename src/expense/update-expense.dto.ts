@@ -1,8 +1,9 @@
-import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Max, Min, MaxLength } from 'class-validator';
 
 export class UpdateExpenseDto {
   @IsOptional()
   @IsString({ message: 'A descrição deve ser em texto ' })
+  @MaxLength(191)
   public description: string;
 
   @IsOptional()
