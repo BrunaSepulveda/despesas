@@ -6,7 +6,12 @@ export class CreateExpenseDto {
   public description: string;
 
   @IsNotEmpty({ message: 'O valor da despesa é obrigatório' })
-  @IsNumber({ maxDecimalPlaces: 2 }, { message: 'O valor é um campo numérico' })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message: 'O valor é um campo numérico, com limite de duas casas decimais',
+    },
+  )
   @Max(9999.99)
   @Min(0.1)
   public value: number;

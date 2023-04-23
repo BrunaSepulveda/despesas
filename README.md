@@ -50,12 +50,6 @@ $ npm run start:prod
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Support
@@ -71,3 +65,24 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Iniciando projeto
+Para inciar o projeto é necessário usar o comando ```docker-compose up -d``` para gerar um container e um servidor postgresql, em seguida será preciso criar uma conexão no banco com as credencais que estão no arquivo docker-compose, é importante que essas credenciais estão replicadas no arquivo .env
+
+## Migrations
+
+```bash
+# Executa migrations que não foram executadas ainda
+$ npm run migration:run
+```
+
+```bash
+# Reverte a última migrations executada
+$ npm run migration:revert
+```
+```bash
+# Apaga o banco e executa todas as migrations
+$ npm run db:reload
+```
+### Importante
+Resalto que normalmente essas credenciais ficam visíveis apenas as que são para execusão do projeto localmente, em caso de deploy para produção ou staging é fortemente recomendado que o arquivo docker-compose esteja protegido e fora do projeto, além das credenciais que estão no .env protegidas e inseridas no arquivo no seu ambiente de daploy

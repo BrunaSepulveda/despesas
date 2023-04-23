@@ -23,7 +23,9 @@ export class ExpenseService {
   }
 
   async update(id: string, updateExpenseDto: UpdateExpenseDto, user: User) {
-    const expense = await this.expenseRepository.findOne(id);
+    const expense = await this.expenseRepository.findOne(id, {
+      relations: ['user'],
+    });
     if (!expense) {
       throw new NotFoundException('Despensa não foi encontrada');
     }
