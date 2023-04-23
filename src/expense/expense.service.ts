@@ -8,13 +8,18 @@ import { Expense } from './expense.entity';
 import { User } from '../user/user.entity';
 import { CreateExpenseDto } from './create-expense.dto';
 import { UpdateExpenseDto } from './update-expense.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ExpenseService {
-  constructor(private readonly expenseRepository: ExpenseRepository) {}
+  constructor(
+    @InjectRepository(Expense)
+    private readonly expenseRepository: ExpenseRepository,
+  ) {}
 
   async create(createExpenseDto: CreateExpenseDto, user: User) {
-    return this.expenseRepository.save({ ...createExpenseDto, user });
+    const x = await this.expenseRepository.save({ ...createExpenseDto, user });
+    return x;
   }
 
   async update(id: string, updateExpenseDto: UpdateExpenseDto, user: User) {
@@ -30,8 +35,10 @@ export class ExpenseService {
     return this.expenseRepository.update(id, updateExpenseDto);
   }
 
-  async getOne(id: string, user: User): Promise<Expense> {
-    const expense = await this.expenseRepository.findOne(id);
+  async getOne(id: string, user: User): Promise<Partial<Expense>> {
+    const expense = await this.expenseRepository.findOne(id, {
+      relations: ['user'],
+    });
     if (!expense) {
       throw new NotFoundException('Despensa não foi encontrada');
     }
@@ -40,7 +47,8 @@ export class ExpenseService {
         'Usuário tem acesso apenas suas próprias despesas',
       );
     }
-    return expense;
+    const { user: userExpense, ...rest } = expense;
+    return rest;
   }
 
   async getByUser(user: User): Promise<Expense[]> {
@@ -48,7 +56,9 @@ export class ExpenseService {
   }
 
   async deleteById(id: string, user: User) {
-    const expense = await this.expenseRepository.findOne(id);
+    const expense = await this.expenseRepository.findOne(id, {
+      relations: ['user'],
+    });
     if (!expense) {
       throw new NotFoundException('Despensa não foi encontrada');
     }

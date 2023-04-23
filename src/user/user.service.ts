@@ -6,36 +6,44 @@ import {
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
 import { UpdateResult } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
-  async create(email: string, password: string): Promise<User> {
-    return this.userRepository.save({ email, password });
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: UserRepository,
+  ) {}
+  async create(email: string, pass: string): Promise<Partial<User>> {
+    const { password, ...rest } = await this.userRepository.save({
+      email,
+      password: pass,
+    });
+    return rest;
   }
 
   async getAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  async getOne(id: string): Promise<User> {
+  async getOne(id: string): Promise<Partial<User>> {
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
-    return user;
+    const { password, ...rest } = user;
+    return rest;
   }
 
   async getByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findByEmail(email);
-    if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
-    }
     return user;
   }
 
-  async deleteById(id: string): Promise<User> {
-    const user = await this.userRepository.findOne(id);
+  async deleteById(id: string): Promise<Partial<User>> {
+    const user = await this.userRepository.findOne(id, {
+      relations: ['expenses'],
+    });
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }

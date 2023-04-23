@@ -12,7 +12,7 @@ export class User {
   @Column({ type: 'int', nullable: false })
   public password: string;
 
-  @OneToMany(() => Expense, (expense) => expense.id)
+  @OneToMany(() => Expense, (expense) => expense.user)
   public expenses: Expense[];
 
   @Column({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
