@@ -68,6 +68,15 @@ Nest is [MIT licensed](LICENSE).
 
 ## Iniciando projeto
 Para inciar o projeto é necessário usar o comando ```docker-compose up -d``` para gerar um container e um servidor postgresql, em seguida será preciso criar uma conexão no banco com as credencais que estão no arquivo docker-compose, é importante que essas credenciais estão replicadas no arquivo .env
+Siga o .env.example para as variáveis de ambiente
+
+As informações correspondente entre o arquivo docker-compose e .env, essas informações devem ser iguais.
+| docker-compose| env |
+| ------------- | ------------- |
+| POSTGRES_PASSWORD| DB_PASSWORD  |
+| POSTGRES_USER  | DB_USERNAME  |
+| POSTGRES_USER  | DB_USERNAME  |
+| ports  | DB_PORT  |
 
 ## Migrations
 

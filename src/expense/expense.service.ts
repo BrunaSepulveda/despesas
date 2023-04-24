@@ -9,17 +9,27 @@ import { User } from '../user/user.entity';
 import { CreateExpenseDto } from './create-expense.dto';
 import { UpdateExpenseDto } from './update-expense.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class ExpenseService {
   constructor(
     @InjectRepository(Expense)
     private readonly expenseRepository: ExpenseRepository,
+    private readonly mailService: MailService,
   ) {}
 
   async create(createExpenseDto: CreateExpenseDto, user: User) {
-    const x = await this.expenseRepository.save({ ...createExpenseDto, user });
-    return x;
+    const expense = await this.expenseRepository.save({
+      ...createExpenseDto,
+      user,
+    });
+    await this.mailService.enviarEmail(
+      user.email,
+      `valor: ${expense.value}, descrição: ${expense.description}`,
+    );
+
+    return expense;
   }
 
   async update(id: string, updateExpenseDto: UpdateExpenseDto, user: User) {
